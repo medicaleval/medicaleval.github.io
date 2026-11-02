@@ -174,6 +174,7 @@
   summary.note-label::after{content:'▾';margin-inline-start:auto;font-size:12px;transition:transform 0.15s;flex-shrink:0;}
   details[open] > summary.note-label::after{transform:rotate(180deg);}
   .note-tag{font-size:10px;background:#F3E4BE;color:#6B4F16;padding:1px 7px;border-radius:10px;font-weight:700;}
+  .note-tag{white-space:nowrap;flex-shrink:0;}
   .note-input{width:100%;padding:8px 10px;border-radius:8px;border:1px solid #E6D5A8;font-size:13px;resize:vertical;background:#fff;}
   .staff-name-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(90px,1fr));gap:6px;margin-bottom:8px;}
   .staff-name-input{padding:7px 9px;border-radius:8px;border:1px solid #E6D5A8;font-size:12.5px;background:#fff;}
@@ -1378,6 +1379,44 @@ function showToast(msg){
 }
 
 /* ---------------- render: نافذة اختيار زيارة من ملف مجمّع (لوحة القيادة) ---------------- */
+/* ===== حجم الخط (لراحة النظر) =====
+   بيكبّر الواجهة كلها بنسبة (zoom) فالشاشة بتعيد ترتيب نفسها على عرض الموبايل من غير سحب يمين وشمال.
+   الإعداد محفوظ على الجهاز ده بس، ومش بيأثر على التقرير المطبوع/PDF. */
+const FONT_SCALE_KEY = "dma-font-scale";
+const FONT_SCALES = [[1,"عادي"],[1.15,"كبير"],[1.3,"أكبر"],[1.5,"الأكبر"]];
+let _fontScale = 1;
+function applyFontScale(v){
+  _fontScale = v;
+  try{ document.documentElement.style.zoom = (v===1 ? "" : String(v)); }catch(e){}
+}
+function loadFontScale(){
+  let v = 1;
+  try{ v = parseFloat(localStorage.getItem(FONT_SCALE_KEY)) || 1; }catch(e){}
+  if(!FONT_SCALES.some(x=>x[0]===v)) v = 1;
+  applyFontScale(v);
+}
+window.addEventListener("beforeprint", function(){ try{ document.documentElement.style.zoom = ""; }catch(e){} });
+window.addEventListener("afterprint", function(){ applyFontScale(_fontScale); });
+function renderFontSizeModal(){
+  if(!state.fontModalOpen) return "";
+  const btns = FONT_SCALES.map(([v,label])=>{
+    const on = v===_fontScale;
+    return `<button data-action="setFontScale" data-scale="${v}" style="display:flex;justify-content:space-between;align-items:center;width:100%;padding:12px 14px;margin-bottom:8px;border-radius:12px;border:2px solid ${on?"var(--teal, #0F5E66)":"var(--border, #E3DED1)"};background:${on?"#E3EFEE":"#fff"};cursor:pointer;font-family:inherit;">
+      <span style="font-weight:700;font-size:${Math.round(14*v)}px;">${label}</span>
+      <span style="font-size:${Math.round(13*v)}px;color:#5B6472;">بند تجريبي ${on?"✓":""}</span>
+    </button>`;
+  }).join("");
+  return `
+  <div class="modal-overlay" data-action="closeFontModal">
+    <div class="modal-box" data-stop="1">
+      <div class="modal-title brand">حجم الخط</div>
+      <div class="modal-sub">اختر الحجم المريح لعينك. الشاشة كلها هتكبر وتترتب على عرض الموبايل.</div>
+      ${btns}
+      <div class="p-tiny" style="margin-top:4px;">الإعداد بيتحفظ على الجهاز ده بس، ومش بيأثر على التقرير المطبوع.</div>
+      <div class="modal-footer"><button class="primary-btn" data-action="closeFontModal">تم</button></div>
+    </div>
+  </div>`;
+}
 function renderDraftRestoreModal(){
   const d = state.pendingDraft;
   if(!d) return "";
@@ -2395,6 +2434,7 @@ function renderTopBar(){
       </div>
       <div style="display:flex;align-items:center;gap:8px;">
         ${overall.max>0 ? `<div class="overall-pill brand">${overall.pct}% ${SHOW_ITEM_TOTALS ? `<span style="opacity:.7;font-weight:500;">· تم تقييم ${overall.answered} من ${overall.totalItems}</span>` : ""}</div>` : ""}
+        <button class="help-btn" data-action="openFontSize" title="حجم الخط" aria-label="حجم الخط" style="width:auto;padding:0 8px;">Aa</button>
         <button class="help-btn" data-action="openInstructions" title="تعليمات الاستخدام">؟</button>
       </div>
     </div>
@@ -6725,7 +6765,7 @@ function render(){
     _app.querySelectorAll("details.area-status-dept").forEach((d,i)=>{ _detState[_detKey(d,i)] = d.open; });
     _app.querySelectorAll(".equipment-scroll-wrap, .modal-box").forEach((el,i)=>{ _scrolls[i] = el.scrollTop; });
   }catch(e){}
-  document.getElementById("app").innerHTML = `${renderTopBar()}${toastHtml}${body}${floatingSaveHtml}${renderAreaNavFloating()}${renderInstructionsModal()}${renderRefTableModal()}${renderWeightScaleModal()}${renderMultiCheckModal()}${renderEquipmentDetailsModal()}${renderOrgChartModal()}${renderServicesModal()}${renderFloorPlansModal()}${renderAggImportModal()}${renderDraftRestoreModal()}`;
+  document.getElementById("app").innerHTML = `${renderTopBar()}${toastHtml}${body}${floatingSaveHtml}${renderAreaNavFloating()}${renderInstructionsModal()}${renderRefTableModal()}${renderWeightScaleModal()}${renderMultiCheckModal()}${renderEquipmentDetailsModal()}${renderOrgChartModal()}${renderServicesModal()}${renderFloorPlansModal()}${renderAggImportModal()}${renderDraftRestoreModal()}${renderFontSizeModal()}`;
   scheduleSave();
   try{
     _app.querySelectorAll("details.area-status-dept").forEach((d,i)=>{ const k=_detKey(d,i); if(k in _detState) d.open = _detState[k]; });
@@ -7031,6 +7071,18 @@ document.addEventListener("click", function(e){
     render();
     markSaved();
     _draftClear();
+  } else if(action==="openFontSize"){
+    state.fontModalOpen = true;
+    render();
+  } else if(action==="setFontScale"){
+    const v = parseFloat(el.getAttribute("data-scale")) || 1;
+    applyFontScale(v);
+    try{ localStorage.setItem(FONT_SCALE_KEY, String(v)); }catch(e){}
+    render();
+  } else if(action==="closeFontModal"){
+    if(el.classList && el.classList.contains("modal-overlay") && e && e.target !== el) return;
+    state.fontModalOpen = false;
+    render();
   } else if(action==="toggleMobileSidebar"){
     state.mobileSidebarOpen = !state.mobileSidebarOpen;
     render();
@@ -7396,6 +7448,7 @@ function closeInstructions(){
     migrateOrphanIndicators();
     state.pendingDraft = readDraft();
     state.showInstructions = !state.visit.hospital && !state.pendingDraft;
+    loadFontScale();
     if(state.visit.hospital) state.lastSavedAt = new Date();
     render();
 
