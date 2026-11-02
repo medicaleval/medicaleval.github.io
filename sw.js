@@ -17,7 +17,7 @@ self.addEventListener("fetch", function(e){
   if(!cacheable) return;
   e.respondWith(
     /* ملفات البوابة نفسها: نتحقق من السيرفر كل مرة (no-cache) عشان التعديل يظهر فورًا بدل ما المتصفح يعرض نسخة مخزنة لمدة 10 دقايق */
-    fetch(url.indexOf(self.location.origin) === 0 ? new Request(req, {cache: "no-cache"}) : req).then(function(res){
+    (url.indexOf(self.location.origin) === 0 ? fetch(url, {cache: "no-cache", credentials: "same-origin"}) : fetch(req)).then(function(res){
       if(res && (res.ok || res.type === "opaque") && !/version\.json/.test(url)){
         var copy = res.clone();
         caches.open(CACHE).then(function(c){ c.put(req, copy); });
