@@ -1,2 +1,10 @@
-# curative-eval.github.io
-An evaluation form used for specific hospitals by the Ministry of Health egy
+# التقييم الدوري للمستشفيات
+
+بوابة ملف التقييم الدوري للمستشفيات — الإدارة العامة للطب العلاجي (نسخة تجريبية Pilot).
+
+- `index.html`: صفحة التعريف بالملف
+- `evaluation.html`: ملف التقييم
+- `version.json`: آخر إصدار (الملف بيفحصه لتنبيه التحديث)
+- `sw.js`: تشغيل بدون نت بعد أول فتح
+
+الرابط: https://medicaleval.github.io/
