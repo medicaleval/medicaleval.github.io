@@ -1,6 +1,6 @@
 /* البوابة: الشبكة أولًا دايمًا (عشان الكل ياخد آخر نسخة)، والنسخة المخزنة بتستخدم بس لو مفيش نت.
    الفيديوهات مستبعدة من التخزين عشان متاخدش مساحة من الموبايل. */
-var CACHE = "dma-portal-v2";
+var CACHE = "dma-portal-v3";
 var CORE = ["./", "index.html", "evaluation.html", "version.json"];
 self.addEventListener("install", function(e){
   e.waitUntil(caches.open(CACHE).then(function(c){ return c.addAll(CORE).catch(function(){}); }).then(function(){ return self.skipWaiting(); }));
@@ -16,7 +16,8 @@ self.addEventListener("fetch", function(e){
   var cacheable = url.indexOf(self.location.origin) === 0 || /cdnjs\.cloudflare\.com|fonts\.(googleapis|gstatic)\.com/.test(url);
   if(!cacheable) return;
   e.respondWith(
-    fetch(req).then(function(res){
+    /* ملفات البوابة نفسها: نتحقق من السيرفر كل مرة (no-cache) عشان التعديل يظهر فورًا بدل ما المتصفح يعرض نسخة مخزنة لمدة 10 دقايق */
+    fetch(url.indexOf(self.location.origin) === 0 ? new Request(req, {cache: "no-cache"}) : req).then(function(res){
       if(res && (res.ok || res.type === "opaque") && !/version\.json/.test(url)){
         var copy = res.clone();
         caches.open(CACHE).then(function(c){ c.put(req, copy); });
