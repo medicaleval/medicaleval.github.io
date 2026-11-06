@@ -574,5 +574,40 @@ var CONFIG = {
   v.addEventListener("play", load);
 })();
 </script>
+<script>
+/* ===== فحص الإصدار بعد كل تحديث — بيظهر بس لما الرابط ينتهي بـ ?check =====
+   بيقارن 3 حاجات: build في version.json ↔ APP_BUILD جوه evaluation.html، و version ↔ DATA_VERSION.
+   لو حاجة مش متطابقة، التنبيه الأصفر مش هيوصل للناس — فالفحص ده بيكشف النسيان فورًا. */
+(function(){
+  if(!/[?&]check\b/.test(location.search)) return;
+  var box = document.createElement("div");
+  box.style.cssText = "position:relative;z-index:9999;margin:0;padding:14px 16px;font-family:Tajawal,sans-serif;font-size:15px;line-height:1.8;background:#FFF8E1;color:#1B1B1B;border-bottom:3px solid #C9A227";
+  box.textContent = "جاري فحص الإصدار…";
+  document.body.insertBefore(box, document.body.firstChild);
+  function row(ok, label, a, b){ return "<div>" + (ok ? "✅" : "❌") + " <b>" + label + "</b>: " + a + (b!==undefined ? " ↔ " + b : "") + "</div>"; }
+  function esc(x){ return String(x==null?"—":x).replace(/[<>&]/g,""); }
+  Promise.all([
+    fetch("version.json?t=" + Date.now(), {cache:"no-store"}).then(function(r){ return r.json(); }),
+    fetch("evaluation.html?t=" + Date.now(), {cache:"no-store"}).then(function(r){ return r.text(); })
+  ]).then(function(res){
+    var v = res[0], html = res[1];
+    var mb = html.match(/var APP_BUILD = "([^"]+)"/), mv = html.match(/const DATA_VERSION = "([^"]+)"/), mu = html.match(/var UPDATE_CHECK_URL = "([^"]*)"/);
+    var appBuild = mb ? mb[1] : null, dataVer = mv ? mv[1] : null, upd = mu ? mu[1] : null;
+    var fmt = /^\d{4}-\d{1,2}-\d{1,2}(\.\d+)?$/;
+    var okBuild = !!appBuild && appBuild === v.build;
+    var okFmt = fmt.test(String(v.build||""));
+    var okVer = !!dataVer && dataVer === v.version;
+    var okUrl = !!upd && upd.indexOf(location.host) >= 0;
+    var all = okBuild && okFmt && okVer && okUrl;
+    box.style.background = all ? "#E6F3EC" : "#FBEAE7";
+    box.style.borderBottomColor = all ? "#2E7D5B" : "#A63D2F";
+    box.innerHTML = "<div style='font-weight:800;font-size:17px'>" + (all ? "✅ الإصدار متسق — التنبيه هيوصل للنسخ المتحمّلة" : "❌ فيه عدم تطابق — صلّحه قبل ما تعلن عن التحديث") + "</div>" +
+      row(okBuild, "رقم البناء (version.json ↔ الملف)", esc(v.build), esc(appBuild)) +
+      row(okFmt, "صيغة رقم البناء (YYYY-MM-DD أو YYYY-MM-DD.N)", esc(v.build)) +
+      row(okVer, "رقم الإصدار (version.json ↔ الملف)", esc(v.version), esc(dataVer)) +
+      row(okUrl, "رابط فحص التحديث جوه الملف", esc(upd));
+  }).catch(function(e){ box.style.background = "#FBEAE7"; box.textContent = "❌ تعذّر الفحص: " + e; });
+})();
+</script>
 </body>
 </html>
