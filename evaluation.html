@@ -4129,22 +4129,22 @@ const INDICATOR_DEPT_CONFIG = {
     excelSheet: "مؤشرات",
     excelStartRow: 5,
     fields: [
-      {key:"admissions",label:"عدد مرضى الدخول",col:"AAI"},
+      {key:"admissions",label:"عدد مرضى الدخول",col:"PV"},
       {key:"discharges",label:"عدد مرضى الخروج",col:"PW"},
       {key:"deaths",label:"عدد الوفيات",col:"PX"},
-      {key:"treatmentDays",label:"عدد أيام العلاج",col:"AAM"},
-      {key:"inpMinor", label:"داخلي - عمليات صغرى", col:"PZ"},
-      {key:"inpMedium", label:"داخلي - عمليات متوسطة", col:"QA"},
-      {key:"inpMajor", label:"داخلي - عمليات كبرى", col:"QB"},
-      {key:"inpSkilled", label:"داخلي - ذات مهارة", col:"QC"},
-      {key:"inpSpecial", label:"داخلي - ذات طابع خاص", col:"QD"},
-      {key:"inpAdvanced", label:"داخلي - متقدمة", col:"QE"},
+      {key:"treatmentDays",label:"عدد أيام العلاج",col:"PY"},
+      {key:"inpMinor", label:"داخلي - عمليات صغرى", col:"QD"},
+      {key:"inpMedium", label:"داخلي - عمليات متوسطة", col:"QE"},
+      {key:"inpMajor", label:"داخلي - عمليات كبرى", col:"QF"},
+      {key:"inpSkilled", label:"داخلي - ذات مهارة", col:"QG"},
+      {key:"inpSpecial", label:"داخلي - ذات طابع خاص", col:"QH"},
+      {key:"inpAdvanced", label:"داخلي - متقدمة", col:"QI"},
       {key:"totalInpatientOps",label:"جملة عمليات الداخلي",col:"QJ"},
-      {key:"erOps", label:"عمليات الطوارئ والاستقبال", col:"QG"},
+      {key:"erOps", label:"عمليات الطوارئ والاستقبال", col:"QK"},
       {key:"outpatientMinorOps",label:"صغرى بالعيادات الخارجية",col:"QL"},
       {key:"totalAllOps",label:"جملة العمليات (داخلي وخارجي)",col:"QM"},
     ],
-    rate: {label:"معدل العمليات الكبرى وذات المهارة%", numKeys:["inpMajor","inpSkilled"], denKey:"totalInpatientOps", target:10},
+    rate: {label:"معدل العمليات الكبرى وذات المهارة وما فوقها%", numKeys:["inpMajor","inpSkilled","inpSpecial","inpAdvanced"], denKey:"totalInpatientOps", target:10},
     groups: [
       {
         id:"byspecialty", title:"🔍 عرض تفصيل العمليات حسب التخصص (تردد عيادة + استقبال + دخول + نوع العملية، جنب بعض لكل تخصص)",
@@ -4168,7 +4168,7 @@ const INDICATOR_DEPT_CONFIG = {
           {key:"op_s1_6",label:"اورام - ذات مهارة",col:"RH"},
           {key:"op_s1_7",label:"اورام - ذات طابع خاص",col:"RI"},
           {key:"op_s1_8",label:"اورام - متقدمة",col:"RJ"},
-          {key:"op_s1_9",label:"اورام - اجمالي",col:"AEJ"},
+          {key:"op_s1_9",label:"اورام - اجمالي",col:"RK"},
           {key:"op_s2_0",label:"انف واذن - تردد عيادات",col:"RM"},
           {key:"op_s2_1",label:"انف واذن - تردد استقبال",col:"RN"},
           {key:"op_s2_2",label:"انف واذن - دخول",col:"RO"},
@@ -4253,7 +4253,7 @@ const INDICATOR_DEPT_CONFIG = {
           {key:"er_s1_3",label:"اورام - ذات مهارة",col:"WK"},
           {key:"er_s1_4",label:"اورام - ذات طابع خاص",col:"WL"},
           {key:"er_s1_5",label:"اورام - متقدمة",col:"WM"},
-          {key:"er_s1_6",label:"اورام - اجمالي",col:"AEJ"},
+          {key:"er_s1_6",label:"اورام - اجمالي",col:"WN"},
           {key:"er_s2_0",label:"انف واذن - صغرى",col:"WP"},
           {key:"er_s2_1",label:"انف واذن - متوسطة",col:"WQ"},
           {key:"er_s2_2",label:"انف واذن - كبرى",col:"WR"},
@@ -7485,7 +7485,7 @@ function closeInstructions(){
    UPDATE_CHECK_URL: رابط version.json الكامل على البوابة — بيستخدم لما الملف يتفتح كملف متحمّل على الجهاز.
    لما الملف يتفتح من البوابة نفسها بنستخدم المسار النسبي، فنقل البوابة لسيرفر الوزارة مش محتاج تعديل هنا
    (إلا تحديث UPDATE_CHECK_URL للنسخ المتحمّلة). أي خطأ = صمت تام. */
-var APP_BUILD = "2026-11-06";
+var APP_BUILD = "2026-11-07";
 var UPDATE_CHECK_URL = "https://medicaleval.github.io/version.json";
 (function(){
   /* مقارنة رقم البناء كأرقام مش كنص: "2026-11-02.10" أحدث من "2026-11-02.2"، و"2026-11-02" = "2026-11-02.1" */
