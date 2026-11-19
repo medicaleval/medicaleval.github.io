@@ -472,6 +472,59 @@ footer b{color:var(--deep)}
     </div>
   </div>
 </section>
+<!-- ===== قسم لوحة القيادة للمديريات (محمي بكلمة سر) — الصقه في الصفحة مكان ما تحب ===== -->
+<section id="dir-dash" dir="rtl" style="padding:32px 16px">
+<style>
+#dir-dash .dd-card{max-width:560px;margin:0 auto;background:#0B3D4C;color:#fff;border-radius:22px;padding:26px 22px;text-align:center;box-shadow:0 14px 36px rgba(0,0,0,.18)}
+#dir-dash .dd-tag{display:inline-block;background:rgba(224,176,74,.18);color:#E0B04A;border-radius:999px;padding:4px 14px;font-size:13px;font-weight:700;margin-bottom:10px}
+#dir-dash h2{margin:0 0 6px;font-size:24px;color:#fff}
+#dir-dash p{margin:0 0 16px;color:#cfe3e8;font-size:14.5px;line-height:1.8}
+#dir-dash input{width:100%;box-sizing:border-box;padding:13px;border-radius:12px;border:0;font-size:16px;text-align:center;direction:ltr;font-family:inherit}
+#dir-dash button{width:100%;margin-top:10px;padding:13px;border:0;border-radius:12px;font-size:16px;font-weight:700;cursor:pointer;font-family:inherit;background:#E0B04A;color:#0B3436}
+#dir-dash button:disabled{opacity:.6;cursor:wait}
+#dir-dash .dd-msg{min-height:22px;margin-top:10px;font-size:14px;font-weight:700}
+#dir-dash .dd-note{font-size:12.5px;color:#9fc0c7;margin-top:12px;line-height:1.7}
+</style>
+<div class="dd-card">
+  <span class="dd-tag">🔒 للمديريات فقط</span>
+  <h2>لوحة القيادة</h2>
+  <p>لمسؤولي المديريات: اكتب كلمة السر عشان تحمّل ملف لوحة القيادة.</p>
+  <div id="dd-lock">
+    <input id="dd-pw" type="password" placeholder="كلمة السر" autocomplete="current-password">
+    <button id="dd-go">دخول</button>
+  </div>
+  <button id="dd-dl" style="display:none">⬇ تحميل ملف لوحة القيادة</button>
+  <div id="dd-msg" class="dd-msg"></div>
+  <div class="dd-note">ما تبعتش الملف ولا كلمة السر لأي حد خارج المديرية.</div>
+</div>
+<script>
+(function(){
+  var blob=null,name='لوحة_القيادة.html';
+  function u(s){var b=atob(s),a=new Uint8Array(b.length);for(var i=0;i<b.length;i++)a[i]=b.charCodeAt(i);return a;}
+  var m=document.getElementById('dd-msg'),go=document.getElementById('dd-go');
+  async function open_(){
+    var pw=document.getElementById('dd-pw').value.trim();
+    if(!pw){m.style.color='#ffb4a8';m.textContent='اكتب كلمة السر الأول.';return;}
+    if(!(window.crypto&&crypto.subtle)){m.style.color='#ffb4a8';m.textContent='المتصفح ده قديم. افتح الصفحة من Chrome أو Safari حديث.';return;}
+    go.disabled=true;m.style.color='#cfe3e8';m.textContent='جاري التحقق…';
+    try{
+      var P=await (await fetch('dashboard-data.json',{cache:'no-store'})).json(); name=P.name||name;
+      var base=await crypto.subtle.importKey('raw',new TextEncoder().encode(pw),'PBKDF2',false,['deriveKey']);
+      var key=await crypto.subtle.deriveKey({name:'PBKDF2',salt:u(P.salt),iterations:P.it,hash:'SHA-256'},base,{name:'AES-GCM',length:256},false,['decrypt']);
+      var pt=await crypto.subtle.decrypt({name:'AES-GCM',iv:u(P.iv)},key,u(P.ct));
+      blob=new Blob([pt],{type:'text/html'});
+      document.getElementById('dd-lock').style.display='none';document.getElementById('dd-dl').style.display='block';
+      m.style.color='#9be0b8';m.textContent='✅ تم. اضغط تحميل.';
+    }catch(e){m.style.color='#ffb4a8';m.textContent=(e&&e.name==='OperationError')?'كلمة السر غلط.':'محتاج نت عشان تفتح اللوحة. جرّب تاني.';}
+    go.disabled=false;
+  }
+  go.onclick=open_;
+  document.getElementById('dd-pw').addEventListener('keydown',function(e){if(e.key==='Enter')open_();});
+  document.getElementById('dd-dl').onclick=function(){var a=document.createElement('a');a.href=URL.createObjectURL(blob);a.download=name;document.body.appendChild(a);a.click();a.remove();};
+})();
+</script>
+</section>
+<!-- ===== نهاية قسم لوحة القيادة ===== -->
 </main>
 
 <footer>
