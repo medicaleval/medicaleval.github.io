@@ -483,19 +483,20 @@ footer b{color:var(--deep)}
 #dir-dash button{width:100%;margin-top:10px;padding:13px;border:0;border-radius:12px;font-size:16px;font-weight:700;cursor:pointer;font-family:inherit;background:#E0B04A;color:#0B3436}
 #dir-dash button:disabled{opacity:.6;cursor:wait}
 #dir-dash .dd-msg{min-height:22px;margin-top:10px;font-size:14px;font-weight:700}
+#dir-dash .dd-video{width:100%;border-radius:14px;background:#000;margin:0 0 16px;display:block;aspect-ratio:16/9}
 #dir-dash .dd-note{font-size:12.5px;color:#9fc0c7;margin-top:12px;line-height:1.7}
 </style>
 <div class="dd-card">
   <span class="dd-tag">🔒 للمديريات فقط</span>
   <h2>لوحة القيادة</h2>
-  <p>لمسؤولي المديريات: اكتب كلمة السر عشان تحمّل ملف لوحة القيادة.</p>
+  <p>شاهد الفيديو عشان تعرف اللوحة بتعمل إيه، وبعدين اكتب كلمة السر وحمّل الملف.</p>
+  <video class="dd-video" controls playsinline preload="none" poster="dashboard-video-poster.jpg"><source src="dashboard-video.mp4" type="video/mp4"></video>
   <div id="dd-lock">
     <input id="dd-pw" type="password" placeholder="كلمة السر" autocomplete="current-password">
     <button id="dd-go">دخول</button>
   </div>
   <button id="dd-dl" style="display:none">⬇ تحميل ملف لوحة القيادة</button>
   <div id="dd-msg" class="dd-msg"></div>
-  <div class="dd-note">ما تبعتش الملف ولا كلمة السر لأي حد خارج المديرية.</div>
 </div>
 <script>
 (function(){
