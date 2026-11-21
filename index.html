@@ -324,6 +324,27 @@ footer b{color:var(--deep)}
   </div>
 </section>
 
+<section id="guide-video" style="padding-top:10px">
+  <div class="wrap fade">
+    <span class="kicker">تدريب المقيّمين</span>
+    <h2 class="sec-title">فيديو تعليمي: إزاي تستخدم الملف</h2>
+    <p class="sec-sub">شرح كامل في ١٠ دقايق… من أول ما تفتح الملف لحد ما التقرير يبقى في إيدك.</p>
+    <div class="video-box">
+      <video id="guide" controls playsinline preload="none" poster="guide-poster.jpg"><source src="guide.mp4" type="video/mp4"></video>
+    </div>
+  </div>
+</section>
+<script>
+document.getElementById('guide').addEventListener('play', function () {
+  var v = this;
+  try {
+    if (v.requestFullscreen) v.requestFullscreen().then(function () {
+      if (screen.orientation && screen.orientation.lock) screen.orientation.lock('landscape').catch(function(){});
+    }).catch(function(){});
+    else if (v.webkitEnterFullscreen) v.webkitEnterFullscreen();
+  } catch (e) {}
+}, { once: true });
+</script>
 <section id="open" class="open-sec">
   <div class="wrap fade">
     <span class="kicker">مهم قبل ما تبدأ</span>
