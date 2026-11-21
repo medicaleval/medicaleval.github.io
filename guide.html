@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl"><head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>فيديو تعليمي: إزاي تستخدم ملف التقييم الدوري للمستشفيات</title>
+<meta name="description" content="شرح كامل في ١٠ دقايق… من أول ما تفتح الملف لحد ما التقرير يبقى في إيدك.">
+<meta property="og:type" content="video.other">
+<meta property="og:title" content="فيديو تعليمي: إزاي تستخدم ملف التقييم الدوري للمستشفيات">
+<meta property="og:description" content="شرح كامل في ١٠ دقايق… اضغط وشاهد.">
+<meta property="og:image" content="https://medicaleval.github.io/guide-poster.jpg">
+<meta property="og:image:width" content="960"><meta property="og:image:height" content="540">
+<meta property="og:url" content="https://medicaleval.github.io/guide.html">
+<meta name="theme-color" content="#000000">
+<style>
+html,body{margin:0;height:100%;background:#000;overflow:hidden}
+video{position:fixed;inset:0;width:100vw;height:100vh;height:100dvh;object-fit:contain;background:#000}
+#play{position:fixed;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:14px;background:rgba(0,0,0,.6);border:0;cursor:pointer;font-family:"Segoe UI",Tahoma,Arial,sans-serif;color:#fff;font-size:17px;font-weight:700}
+#play .c{width:86px;height:86px;border-radius:50%;background:#E0B04A;display:flex;align-items:center;justify-content:center;box-shadow:0 8px 30px rgba(0,0,0,.5)}
+#play .c:after{content:"";margin-right:-8px;border-style:solid;border-width:18px 0 18px 30px;border-color:transparent transparent transparent #0B3436}
+#home{position:fixed;top:12px;right:12px;z-index:5;color:#fff;background:rgba(255,255,255,.15);padding:8px 12px;border-radius:10px;text-decoration:none;font:600 13px "Segoe UI",Tahoma,Arial,sans-serif}
+</style></head><body>
+<video id="guide" playsinline preload="metadata" poster="guide-poster.jpg"><source src="guide.mp4" type="video/mp4"></video>
+<button id="play" aria-label="تشغيل"><span class="c"></span><span>اضغط للمشاهدة</span></button>
+<a id="home" href="./">الصفحة الرئيسية</a>
+<script>
+var v=document.getElementById('guide'),b=document.getElementById('play'),h=document.getElementById('home');
+b.onclick=function(){
+  b.style.display='none'; h.style.display='none'; v.controls=true;
+  try{
+    if(v.requestFullscreen) v.requestFullscreen().then(function(){ if(screen.orientation&&screen.orientation.lock) screen.orientation.lock('landscape').catch(function(){}); }).catch(function(){});
+    else if(v.webkitEnterFullscreen) v.webkitEnterFullscreen();
+  }catch(e){}
+  v.play().catch(function(){});
+};
+</script>
+</body></html>
