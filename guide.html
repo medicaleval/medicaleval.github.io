@@ -32,4 +32,22 @@ b.onclick=function(){
   v.play().catch(function(){});
 };
 </script>
+<!-- ===== عداد الزيارات والمشاهدات (GoatCounter) — الإحصائيات على https://medicaleval.goatcounter.com ===== -->
+<script data-goatcounter="https://medicaleval.goatcounter.com/count" async src="https://gc.zgo.at/count.js"></script>
+<script>
+(function(){
+  function ev(path,title){ try{ if(window.goatcounter&&goatcounter.count) goatcounter.count({path:path,title:title,event:true}); }catch(e){} }
+  window.dmaCount=ev;
+  function onceOnPlay(id,path,title){ var v=document.getElementById(id); if(v) v.addEventListener('play',function(){ ev(path,title); },{once:true}); }
+  document.addEventListener('DOMContentLoaded',function(){
+    onceOnPlay('guide','video-guide-play','تشغيل الفيديو التعليمي');
+    onceOnPlay('explainer','video-explainer-play','تشغيل فيديو الدقيقتين');
+    document.addEventListener('click',function(e){
+      var a=e.target.closest&&e.target.closest('a[href="evaluation.html"]'); if(!a) return;
+      if(a.hasAttribute('download')) ev('eval-download','تحميل ملف التقييم'); else ev('eval-open','فتح ملف التقييم من الرابط');
+    },true);
+    var dl=document.getElementById('dd-dl'); if(dl) dl.addEventListener('click',function(){ ev('dashboard-download','تحميل لوحة القيادة'); });
+  });
+})();
+</script>
 </body></html>
