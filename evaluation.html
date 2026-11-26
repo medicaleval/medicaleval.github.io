@@ -313,6 +313,7 @@
     body{background:#fff !important;}
     .report-optional-box:has(textarea:placeholder-shown){display:none !important;}
     .report-optional-box textarea{display:none !important;}
+    .toast{display:none !important;}
     .report-optional-box .print-only-text{display:block !important;}
     .violations-section:not(:has(.violation-name-input:not(:placeholder-shown))){display:none !important;}
     .violation-row:not(:has(.violation-name-input:not(:placeholder-shown))){display:none !important;}
@@ -7523,7 +7524,7 @@ function closeInstructions(){
    UPDATE_CHECK_URL: رابط version.json الكامل على البوابة — بيستخدم لما الملف يتفتح كملف متحمّل على الجهاز.
    لما الملف يتفتح من البوابة نفسها بنستخدم المسار النسبي، فنقل البوابة لسيرفر الوزارة مش محتاج تعديل هنا
    (إلا تحديث UPDATE_CHECK_URL للنسخ المتحمّلة). أي خطأ = صمت تام. */
-var APP_BUILD = "2026-11-26.2";
+var APP_BUILD = "2026-11-26.3";
 var UPDATE_CHECK_URL = "https://medicaleval.github.io/version.json";
 (function(){
   /* مقارنة رقم البناء كأرقام مش كنص: "2026-11-02.10" أحدث من "2026-11-02.2"، و"2026-11-02" = "2026-11-02.1" */
