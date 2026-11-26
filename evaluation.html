@@ -300,7 +300,14 @@
   .instr-level-row{display:flex;gap:8px;align-items:flex-start;font-size:12.5px;}
   .modal-footer{display:flex;justify-content:flex-end;gap:8px;margin-top:18px;position:sticky;bottom:0;background:#fff;padding-top:10px;}
 
-  .print-only-text{display:none;white-space:pre-wrap;word-wrap:break-word;font-size:12.5px;line-height:1.8;border:1px solid #cbd5d8;border-radius:8px;padding:8px 10px;margin-top:4px;}
+  .print-only-text{display:none;word-wrap:break-word;font-size:12.5px;line-height:1.8;border:1px solid #cbd5d8;border-radius:8px;padding:8px 10px;margin-top:4px;}
+  .print-only-text .rt-h{font-weight:800;color:#0E4F55;font-size:13.5px;margin:10px 0 4px;}
+  .print-only-text .rt-h:first-child{margin-top:0;}
+  .print-only-text .rt-p{margin:0 0 4px;}
+  .print-only-text .rt-l{font-weight:700;color:#0E4F55;}
+  .print-only-text ul,.print-only-text ol{margin:2px 0 6px;padding-right:22px;padding-left:0;}
+  .print-only-text li{margin:0 0 2px;}
+  .print-only-text .rt-gap{height:6px;}
   @media print{
     .no-print{display:none !important;}
     body{background:#fff !important;}
@@ -6626,15 +6633,15 @@ function renderReport(){
       ${hasAnyContent ? bodyHtml : `<p class="p-muted" style="margin-top:16px;">لا توجد بنود ناقصة أو بها إجراءات مسجّلة بعد لعرضها في التقرير. البنود المكتملة (درجة 2) لا تظهر هنا تلقائيًا إلا إذا فعّلت "إدراج في التقرير" لها يدويًا.</p>`}
       <div class="report-optional-box" style="margin-top:24px;">
         <label class="field-label">خدمات أخرى</label>
-        <textarea class="field-input auto-grow" rows="3" oninput="onVisitField('otherServices', this.value); this.nextElementSibling.textContent=this.value; autoGrowTextarea(this);" placeholder="اكتب هنا الخدمات التي تم استحداثها بالفعل بالمستشفى ولا يوجد لها نموذج تقييم داخل الملف...">${esc(state.visit.otherServices)}</textarea><div class="print-only-text">${esc(state.visit.otherServices)}</div>
+        <textarea class="field-input auto-grow" rows="3" oninput="onVisitField('otherServices', this.value); this.nextElementSibling.innerHTML=fmtReportText(this.value); autoGrowTextarea(this);" placeholder="اكتب هنا الخدمات التي تم استحداثها بالفعل بالمستشفى ولا يوجد لها نموذج تقييم داخل الملف...">${esc(state.visit.otherServices)}</textarea><div class="print-only-text">${fmtReportText(state.visit.otherServices)}</div>
       </div>
       <div class="report-optional-box" style="margin-top:12px;">
         <label class="field-label">الرأي العام / التوصيات</label>
-        <textarea class="field-input auto-grow" rows="4" oninput="onVisitField('opinion', this.value); this.nextElementSibling.textContent=this.value; autoGrowTextarea(this);" placeholder="اكتب التقييم العام للمستشفى والتوصيات الرئيسية...">${esc(state.visit.opinion)}</textarea><div class="print-only-text">${esc(state.visit.opinion)}</div>
+        <textarea class="field-input auto-grow" rows="4" oninput="onVisitField('opinion', this.value); this.nextElementSibling.innerHTML=fmtReportText(this.value); autoGrowTextarea(this);" placeholder="اكتب التقييم العام للمستشفى والتوصيات الرئيسية...">${esc(state.visit.opinion)}</textarea><div class="print-only-text">${fmtReportText(state.visit.opinion)}</div>
       </div>
       <div class="report-optional-box" style="margin-top:12px;">
         <label class="field-label">خطة العمل / الإجراءات المتخذة</label>
-        <textarea class="field-input auto-grow" rows="4" oninput="onVisitField('plan', this.value); this.nextElementSibling.textContent=this.value; autoGrowTextarea(this);" placeholder="اكتب خطة العمل والمواعيد المستهدفة لمعالجة أوجه القصور...">${esc(state.visit.plan)}</textarea><div class="print-only-text">${esc(state.visit.plan)}</div>
+        <textarea class="field-input auto-grow" rows="4" oninput="onVisitField('plan', this.value); this.nextElementSibling.innerHTML=fmtReportText(this.value); autoGrowTextarea(this);" placeholder="اكتب المقترحات وخطط التطوير (زيادة النشاط، زيادة معدلات الإشغال، خدمات جديدة…) والمواعيد المستهدفة...">${esc(state.visit.plan)}</textarea><div class="print-only-text">${fmtReportText(state.visit.plan)}</div>
       </div>
 
       <table class="approval-table">
@@ -6792,6 +6799,33 @@ function updateAreaTabsHint(){
   else hint.classList.remove('hidden');
 }
 window.addEventListener('resize', ()=>requestAnimationFrame(updateAreaTabsHint));
+/* تنسيق نص المربعات الحرة في التقرير المطبوع (التوصيات/خطة العمل/خدمات أخرى).
+   النص بيتخزن عادي زي ما هو؛ التنسيق للعرض والطباعة بس:
+   سطر قصير بينتهي بـ":" = عنوان • سطر بيبدأ بـ • أو - أو رقم = بند في قائمة • "كلمة: كلام" = الكلمة بخط عريض */
+function fmtReportText(t){
+  const lines=String(t||"").replace(/\r\n?/g,"\n").split("\n");
+  let html="", list=null;
+  const close=()=>{ if(list){ html+="</"+list+">"; list=null; } };
+  const bulletRe=/^\s*(?:[•●▪■◦○·\-–—*✓✔➢►▶]|o\t)\s*/;
+  const numRe=/^\s*(?:\d+|[٠-٩]+)\s*[\.\-\)٫]\s+/;
+  const firstIdx=lines.findIndex(x=>x.trim()); const multi=lines.filter(x=>x.trim()).length>1;
+  lines.forEach((raw,idx)=>{ if(idx===firstIdx && multi){ const t0=raw.trim(); if(t0.length<=90 && !/[:：]/.test(t0) && !bulletRe.test(t0) && !numRe.test(t0)) lines[idx]=t0+":"; } });
+  for(const raw of lines){
+    const line=raw.replace(/\s+$/,"");
+    if(!line.trim()){ close(); html+='<div class="rt-gap"></div>'; continue; }
+    if(bulletRe.test(line)){ if(list!=="ul"){ close(); html+="<ul>"; list="ul"; } html+="<li>"+labelize(line.replace(bulletRe,""))+"</li>"; continue; }
+    if(numRe.test(line)){ if(list!=="ol"){ close(); html+="<ol>"; list="ol"; } html+="<li>"+labelize(line.replace(numRe,""))+"</li>"; continue; }
+    close();
+    const tl=line.trim();
+    if(/[:：]$/.test(tl) && tl.length<=90){ html+='<div class="rt-h">'+esc(tl.replace(/[:：]$/,""))+'</div>'; continue; }
+    html+='<p class="rt-p">'+labelize(tl)+'</p>';
+  }
+  close(); return html;
+  function labelize(x){
+    const m=/^([^:：]{2,35})[:：]\s*(\S[\s\S]*)$/.exec(x);
+    return m ? '<span class="rt-l">'+esc(m[1])+':</span> '+esc(m[2]) : esc(x);
+  }
+}
 function autoGrowTextarea(el){
   el.style.height = 'auto';
   el.style.height = (el.scrollHeight) + 'px';
@@ -7489,7 +7523,7 @@ function closeInstructions(){
    UPDATE_CHECK_URL: رابط version.json الكامل على البوابة — بيستخدم لما الملف يتفتح كملف متحمّل على الجهاز.
    لما الملف يتفتح من البوابة نفسها بنستخدم المسار النسبي، فنقل البوابة لسيرفر الوزارة مش محتاج تعديل هنا
    (إلا تحديث UPDATE_CHECK_URL للنسخ المتحمّلة). أي خطأ = صمت تام. */
-var APP_BUILD = "2026-11-26.1";
+var APP_BUILD = "2026-11-26.2";
 var UPDATE_CHECK_URL = "https://medicaleval.github.io/version.json";
 (function(){
   /* مقارنة رقم البناء كأرقام مش كنص: "2026-11-02.10" أحدث من "2026-11-02.2"، و"2026-11-02" = "2026-11-02.1" */
