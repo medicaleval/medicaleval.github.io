@@ -300,10 +300,13 @@
   .instr-level-row{display:flex;gap:8px;align-items:flex-start;font-size:12.5px;}
   .modal-footer{display:flex;justify-content:flex-end;gap:8px;margin-top:18px;position:sticky;bottom:0;background:#fff;padding-top:10px;}
 
+  .print-only-text{display:none;white-space:pre-wrap;word-wrap:break-word;font-size:12.5px;line-height:1.8;border:1px solid #cbd5d8;border-radius:8px;padding:8px 10px;margin-top:4px;}
   @media print{
     .no-print{display:none !important;}
     body{background:#fff !important;}
     .report-optional-box:has(textarea:placeholder-shown){display:none !important;}
+    .report-optional-box textarea{display:none !important;}
+    .report-optional-box .print-only-text{display:block !important;}
     .violations-section:not(:has(.violation-name-input:not(:placeholder-shown))){display:none !important;}
     .violation-row:not(:has(.violation-name-input:not(:placeholder-shown))){display:none !important;}
     .indic-report-table-wrap .indic-table-wrap{overflow:visible !important;max-height:none !important;}
@@ -6623,15 +6626,15 @@ function renderReport(){
       ${hasAnyContent ? bodyHtml : `<p class="p-muted" style="margin-top:16px;">لا توجد بنود ناقصة أو بها إجراءات مسجّلة بعد لعرضها في التقرير. البنود المكتملة (درجة 2) لا تظهر هنا تلقائيًا إلا إذا فعّلت "إدراج في التقرير" لها يدويًا.</p>`}
       <div class="report-optional-box" style="margin-top:24px;">
         <label class="field-label">خدمات أخرى</label>
-        <textarea class="field-input" rows="3" oninput="onVisitField('otherServices', this.value)" placeholder="اكتب هنا الخدمات التي تم استحداثها بالفعل بالمستشفى ولا يوجد لها نموذج تقييم داخل الملف...">${esc(state.visit.otherServices)}</textarea>
+        <textarea class="field-input auto-grow" rows="3" oninput="onVisitField('otherServices', this.value); this.nextElementSibling.textContent=this.value; autoGrowTextarea(this);" placeholder="اكتب هنا الخدمات التي تم استحداثها بالفعل بالمستشفى ولا يوجد لها نموذج تقييم داخل الملف...">${esc(state.visit.otherServices)}</textarea><div class="print-only-text">${esc(state.visit.otherServices)}</div>
       </div>
       <div class="report-optional-box" style="margin-top:12px;">
         <label class="field-label">الرأي العام / التوصيات</label>
-        <textarea class="field-input" rows="4" oninput="onVisitField('opinion', this.value)" placeholder="اكتب التقييم العام للمستشفى والتوصيات الرئيسية...">${esc(state.visit.opinion)}</textarea>
+        <textarea class="field-input auto-grow" rows="4" oninput="onVisitField('opinion', this.value); this.nextElementSibling.textContent=this.value; autoGrowTextarea(this);" placeholder="اكتب التقييم العام للمستشفى والتوصيات الرئيسية...">${esc(state.visit.opinion)}</textarea><div class="print-only-text">${esc(state.visit.opinion)}</div>
       </div>
       <div class="report-optional-box" style="margin-top:12px;">
         <label class="field-label">خطة العمل / الإجراءات المتخذة</label>
-        <textarea class="field-input" rows="4" oninput="onVisitField('plan', this.value)" placeholder="اكتب خطة العمل والمواعيد المستهدفة لمعالجة أوجه القصور...">${esc(state.visit.plan)}</textarea>
+        <textarea class="field-input auto-grow" rows="4" oninput="onVisitField('plan', this.value); this.nextElementSibling.textContent=this.value; autoGrowTextarea(this);" placeholder="اكتب خطة العمل والمواعيد المستهدفة لمعالجة أوجه القصور...">${esc(state.visit.plan)}</textarea><div class="print-only-text">${esc(state.visit.plan)}</div>
       </div>
 
       <table class="approval-table">
@@ -7486,7 +7489,7 @@ function closeInstructions(){
    UPDATE_CHECK_URL: رابط version.json الكامل على البوابة — بيستخدم لما الملف يتفتح كملف متحمّل على الجهاز.
    لما الملف يتفتح من البوابة نفسها بنستخدم المسار النسبي، فنقل البوابة لسيرفر الوزارة مش محتاج تعديل هنا
    (إلا تحديث UPDATE_CHECK_URL للنسخ المتحمّلة). أي خطأ = صمت تام. */
-var APP_BUILD = "2026-11-21.2";
+var APP_BUILD = "2026-11-26.1";
 var UPDATE_CHECK_URL = "https://medicaleval.github.io/version.json";
 (function(){
   /* مقارنة رقم البناء كأرقام مش كنص: "2026-11-02.10" أحدث من "2026-11-02.2"، و"2026-11-02" = "2026-11-02.1" */
