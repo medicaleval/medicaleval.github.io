@@ -1,0 +1,270 @@
+<!doctype html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>الإحصاء الشهري للمستشفيات</title>
+<meta name="description" content="ملف إدخال الإحصاء الشهري للمستشفيات — الإدارة العامة للطب العلاجي، مديرية الشئون الصحية بأسيوط.">
+<meta name="robots" content="noindex, nofollow">
+<meta name="theme-color" content="#0E4F55">
+<meta name="color-scheme" content="light">
+<meta property="og:title" content="الإحصاء الشهري للمستشفيات">
+<meta property="og:description" content="ملف واحد كل شهر، وكل البيانات المطلوبة بتطلع منه.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cairo:wght@600;700;800&family=Tajawal:wght@400;500;700&display=swap" rel="stylesheet">
+<style>
+:root{
+  --teal:#0E4F55; --teal-2:#13666E; --deep:#08343A; --gold:#C9A227; --gold-soft:#F3E7BF;
+  --bg:#F7F4EC; --card:#FFFFFF; --ink:#16232A; --muted:#5B6770; --line:#E3DED1;
+  --red:#A63D2F; --red-soft:#FBEAE7; --green:#2E7D5B; --green-soft:#E6F3EC;
+  --radius:18px; --shadow:0 10px 30px -12px rgba(8,52,58,.25);
+}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth;-webkit-text-size-adjust:100%}
+body{margin:0;background:var(--bg);color:var(--ink);font-family:Tajawal,"Segoe UI",Tahoma,sans-serif;font-size:17px;line-height:1.75;overflow-x:hidden}
+h1,h2,h3{font-family:Cairo,Tajawal,sans-serif;line-height:1.35;margin:0}
+a{color:inherit}
+img,video{max-width:100%;height:auto;display:block}
+.wrap{max-width:1080px;margin:0 auto;padding:0 16px}
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:8px;min-height:50px;padding:0 22px;border-radius:14px;font-family:Cairo,sans-serif;font-weight:700;font-size:17px;text-decoration:none;border:0;cursor:pointer}
+.btn:active{transform:scale(.98)}
+.btn-gold{background:var(--gold);color:#1B1B1B;box-shadow:0 8px 20px -8px rgba(201,162,39,.7)}
+.btn-ghost{background:rgba(255,255,255,.1);color:#fff;border:1.5px solid rgba(255,255,255,.55)}
+.btn-teal{background:var(--teal);color:#fff}
+.btn-line{background:#fff;color:var(--teal);border:1.5px solid var(--teal)}
+.pilot{background:var(--deep);color:#E9E2C9;font-size:13.5px;text-align:center;padding:7px 16px}
+.pilot b{color:var(--gold)}
+.inapp{display:none;background:var(--red);color:#fff;padding:10px 16px;font-size:15px;text-align:center}
+
+.hero{background:radial-gradient(1200px 500px at 85% -10%,#13666E 0%,var(--deep) 60%);color:#fff}
+.hero .wrap{padding-top:26px;padding-bottom:46px}
+.brand{display:flex;align-items:center;gap:10px;font-family:Cairo;font-weight:700;font-size:15px}
+.brand .mark{width:40px;height:40px;border-radius:11px;background:var(--gold);color:var(--deep);display:grid;place-items:center;font-size:22px;font-weight:800}
+.brand small{display:block;font-family:Tajawal;font-weight:500;font-size:13px;opacity:.8}
+.hero-grid{display:grid;grid-template-columns:1fr;gap:26px;align-items:center;margin-top:26px}
+@media(min-width:900px){.hero-grid{grid-template-columns:1.05fr 1fr}}
+.hero h1{font-size:clamp(30px,6.6vw,48px);font-weight:800}
+.hero h1 em{font-style:normal;color:var(--gold)}
+.hero p.lead{font-size:18px;opacity:.9;margin:14px 0 0}
+.cta{display:flex;flex-wrap:wrap;gap:10px;margin-top:22px}
+.ver-chip{display:inline-flex;align-items:center;gap:8px;margin-top:16px;background:rgba(255,255,255,.08);border:1px solid rgba(255,255,255,.2);border-radius:999px;padding:4px 14px;font-size:14px}
+.ver-chip .dot{width:8px;height:8px;border-radius:50%;background:#5BD08F}
+.shot{border-radius:16px;overflow:hidden;box-shadow:0 30px 60px -20px rgba(0,0,0,.55);border:1px solid rgba(255,255,255,.15);transform:rotate(-1deg)}
+
+section{padding:46px 0}
+.kicker{display:inline-block;font-family:Cairo;font-weight:700;font-size:14px;color:var(--gold);background:var(--gold-soft);border-radius:999px;padding:2px 12px;margin-bottom:10px;color:#7a5b00}
+.sec-title{font-size:clamp(24px,5vw,34px);font-weight:800;color:var(--deep)}
+.sec-sub{color:var(--muted);margin:8px 0 22px}
+.grid{display:grid;gap:14px;grid-template-columns:repeat(auto-fit,minmax(230px,1fr))}
+.card{background:var(--card);border:1px solid var(--line);border-radius:var(--radius);padding:18px;box-shadow:var(--shadow)}
+.card .ic{font-size:28px}
+.card h3{font-size:19px;color:var(--teal);margin:6px 0 4px}
+.card p{margin:0;color:var(--muted);font-size:15.5px}
+.video-box{border-radius:var(--radius);overflow:hidden;background:#000;box-shadow:var(--shadow)}
+.video-box video{width:100%}
+.steps{counter-reset:s;list-style:none;padding:0;margin:0;display:grid;gap:10px}
+.steps li{counter-increment:s;background:var(--card);border:1px solid var(--line);border-radius:14px;padding:12px 16px 12px 16px;display:flex;gap:14px;align-items:flex-start}
+.steps li::before{content:counter(s);flex:none;width:36px;height:36px;border-radius:10px;background:var(--gold);color:var(--deep);font-family:Cairo;font-weight:800;display:grid;place-items:center}
+
+.open-sec{background:var(--deep);color:#fff}
+.open-sec .sec-title{color:#fff}.open-sec .sec-sub{color:#B9CFCC}
+.tabs{display:flex;gap:6px;flex-wrap:wrap;margin-bottom:12px}
+.tab{background:rgba(255,255,255,.08);color:#fff;border:1px solid rgba(255,255,255,.25);border-radius:999px;padding:6px 16px;font:inherit;font-weight:700;cursor:pointer}
+.tab[aria-selected="true"]{background:var(--gold);color:var(--deep);border-color:var(--gold)}
+.panel{display:none;background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.15);border-radius:var(--radius);padding:8px 18px}
+.panel.on{display:block}
+.panel ol{margin:10px 0;padding-inline-start:22px}.panel li{margin:6px 0}
+.warn{background:rgba(166,61,47,.25);border:1px solid rgba(255,255,255,.2);border-radius:12px;padding:10px 12px;margin:8px 0 12px;font-size:15px}
+.open-cta{display:flex;gap:10px;flex-wrap:wrap;margin-top:18px}
+.small{font-size:14px}
+.copy-row{margin-top:14px;font-size:14px;color:#B9CFCC;display:flex;gap:8px;align-items:center;flex-wrap:wrap}
+.copy-row code{background:rgba(255,255,255,.1);border-radius:8px;padding:2px 8px;direction:ltr;word-break:break-all}
+
+.rules .card{border-inline-start:5px solid var(--gold)}
+.rules .card.red{border-inline-start-color:var(--red)}
+.release{background:var(--card);border:1px solid var(--line);border-radius:var(--radius);padding:18px;box-shadow:var(--shadow)}
+.release .ver{font-family:Cairo;font-weight:800;color:var(--teal);font-size:20px}
+.release ul{margin:8px 0 14px;padding-inline-start:22px}
+.release .actions{display:flex;gap:10px;flex-wrap:wrap;margin-bottom:8px}
+footer{background:var(--deep);color:#B9CFCC;text-align:center;padding:24px 0;font-size:14px;line-height:1.9}
+footer b{color:#fff}
+</style>
+</head>
+<body>
+<div class="pilot">نسخة تجريبية <b>(Pilot)</b> — الإدارة العامة للطب العلاجي — مديرية الشئون الصحية بأسيوط</div>
+<div class="inapp" id="inapp">انت فاتح الصفحة من جوه تطبيق. افتحها في المتصفح (Chrome أو Safari) عشان الملف يشتغل والحفظ يتنزل صح: اضغط ⋯ ثم «فتح في المتصفح».</div>
+
+<header class="hero">
+  <div class="wrap">
+    <div class="brand"><span class="mark">✓</span><div>الإحصاء الشهري للمستشفيات<small>الإدارة العامة للطب العلاجي — مديرية الشئون الصحية بأسيوط</small></div></div>
+    <div class="hero-grid">
+      <div>
+        <h1>ملف واحد كل شهر… <em>وكل البيانات المطلوبة</em> بتطلع منه</h1>
+        <p class="lead">مسئول الإحصاء بيكتب أرقام الشهر مرة واحدة، والملف بيحسب المؤشرات ويراجع الأرقام ويطلّع شيتات الوزارة جاهزة.</p>
+        <div class="cta">
+          <a class="btn btn-gold" href="#open">افتح الملف الآن</a>
+          <a class="btn btn-ghost" href="#video">▶ شاهد الشرح</a>
+        </div>
+        <div class="ver-chip"><span class="dot"></span><span id="verChip">الإصدار الحالي: STAT-V0.8-Nov2026</span></div>
+      </div>
+      <div class="shot"><img src="hero.jpg" alt="شاشة دليل المؤشرات في الملف ببيانات توضيحية" width="1650" height="1050"></div>
+    </div>
+  </div>
+</header>
+
+<main>
+<section id="what">
+  <div class="wrap">
+    <span class="kicker">الملف بيعمل إيه</span>
+    <h2 class="sec-title">الرقم بيتكتب مرة واحدة بس</h2>
+    <p class="sec-sub">بدل ما نفس الرقم يتكتب في كذا شيت لكذا جهة.</p>
+    <div class="grid">
+      <div class="card"><div class="ic">✍️</div><h3>إدخال مرة واحدة</h3><p>الثوابت (الأسرّة والأجهزة) بتتكتب مرة، وكل شهر بتتكتب أرقام الشهر بس في شاشة كل قسم.</p></div>
+      <div class="card"><div class="ic">📊</div><h3>المؤشرات بتتحسب لوحدها</h3><p>الإشغال والإقامة والدوران والوفيات، ومؤشرات دليل المؤشرات الموحد الـ43، شهريًا وربع سنوي.</p></div>
+      <div class="card"><div class="ic">🔎</div><h3>مراجعة قبل الإرسال</h3><p>أي رقم مستحيل منطقيًا بيطلع له ملاحظة حمرا، والخانات الأساسية الفاضية بتتعلّم.</p></div>
+      <div class="card"><div class="ic">📤</div><h3>شيتات الوزارة جاهزة</h3><p>شيت نشاط المستشفى، وبيان حركة المرضى، ونسب إشغال العنايات، ومؤشرات الأداء — بنفس شكل نماذج الوزارة.</p></div>
+      <div class="card"><div class="ic">📴</div><h3>من غير نت</h3><p>الملف بيشتغل على الجهاز، والبيانات بتفضل عند المستشفى في ملف الحفظ.</p></div>
+    </div>
+  </div>
+</section>
+
+<section id="video" style="padding-top:0">
+  <div class="wrap">
+    <span class="kicker">الشرح</span>
+    <h2 class="sec-title">إزاي تدخّل بيانات الشهر</h2>
+    <p class="sec-sub">فيديو 4 دقايق ونص، خطوة بخطوة. الأرقام اللي فيه للتوضيح بس.</p>
+    <div class="video-box"><video controls preload="none" playsinline poster="guide-poster.jpg"><source src="guide.mp4" type="video/mp4"></video></div>
+  </div>
+</section>
+
+<section id="how" style="padding-top:0">
+  <div class="wrap">
+    <span class="kicker">كل شهر</span>
+    <h2 class="sec-title">5 خطوات</h2>
+    <p class="sec-sub">أول مرة بس: اختار اسم المستشفى واكتب الأسرّة والأجهزة في «ثوابت المستشفى».</p>
+    <ol class="steps">
+      <li>افتح ملف الحفظ بتاع المستشفى من «📂 فتح ملف محفوظ».</li>
+      <li>اختار السنة والشهر من الشريط اللي فوق.</li>
+      <li>املا شاشات الأقسام، وانقل أرقام ورق التجميع لشاشة «دليل المؤشرات».</li>
+      <li>صحّح الملاحظات الحمرا في «المراجعة والتصدير».</li>
+      <li>اضغط «💾 حفظ» وابعت الملف للمديرية.</li>
+    </ol>
+  </div>
+</section>
+
+<section id="open" class="open-sec">
+  <div class="wrap">
+    <span class="kicker">افتح الملف</span>
+    <h2 class="sec-title">افتح الملف على جهازك</h2>
+    <p class="sec-sub">الأفضل على الكمبيوتر. اختار نوع جهازك واتبع الخطوات.</p>
+    <div class="tabs" role="tablist">
+      <button class="tab" role="tab" data-tab="pc" aria-selected="true">كمبيوتر</button>
+      <button class="tab" role="tab" data-tab="android" aria-selected="false">أندرويد</button>
+      <button class="tab" role="tab" data-tab="ios" aria-selected="false">آيفون / آيباد</button>
+    </div>
+    <div class="panel on" id="p-pc" role="tabpanel">
+      <ol>
+        <li>افتح الرابط من <b>Chrome</b> أو <b>Edge</b>، واضغط «افتح الملف الآن».</li>
+        <li>أو حمّل الملف، وافتحه بالضغط مرتين عليه.</li>
+        <li>لما تضغط «💾 حفظ»، ملف الحفظ بيتنزل في فولدر «التنزيلات». احتفظ بيه في مكان ثابت، لأنه هو اللي فيه بيانات المستشفى.</li>
+      </ol>
+    </div>
+    <div class="panel" id="p-android" role="tabpanel">
+      <ol>
+        <li>افتح الرابط من <b>Chrome</b>، واضغط «افتح الملف الآن».</li>
+        <li>لما تضغط «💾 حفظ»، ملف الحفظ بيتنزل في «التنزيلات».</li>
+        <li>الكتابة على الموبايل ممكنة، لكن الكمبيوتر أريح لأن الجداول عريضة.</li>
+      </ol>
+    </div>
+    <div class="panel" id="p-ios" role="tabpanel">
+      <ol>
+        <li>افتح رابط الصفحة دي من <b>Safari</b>، واضغط «افتح الملف الآن».</li>
+        <li>لما تضغط «💾 حفظ»، ملف الحفظ بيتنزل في تطبيق <b>الملفات</b>.</li>
+      </ol>
+      <div class="warn"><b>متفتحش ملف الـHTML اللي بيتبعت على الواتساب على الآيفون.</b> الآيفون بيعرضه كمعاينة ومش بيشتغل. افتحه دايمًا من رابط الصفحة.</div>
+    </div>
+    <div class="open-cta">
+      <a class="btn btn-gold" href="monthly-stats.html" id="openApp">افتح الملف الآن</a>
+      <a class="btn btn-ghost" href="monthly-stats.html" download="الإحصاء-الشهري-للمستشفيات.html" id="dlApp">تحميل الملف</a>
+    </div>
+    <div class="copy-row">رابط الصفحة: <code id="pageUrl"></code> <button class="btn btn-ghost" style="min-height:34px;padding:0 12px;font-size:14px" id="copyBtn" type="button">نسخ الرابط</button></div>
+  </div>
+</section>
+
+<section id="rules" class="rules">
+  <div class="wrap">
+    <span class="kicker">قبل ما تبدأ</span>
+    <h2 class="sec-title">3 قواعد</h2>
+    <div class="grid" style="margin-top:18px">
+      <div class="card red"><h3>ملف واحد بس لكل مستشفى</h3><p>مسئول الإحصاء بس اللي بيكتب فيه، وباقي الجهات بتسلّمه ورقها المتمضي. لو اتنين اشتغلوا على نسختين، اللي يحفظ الأخير هيمسح شغل التاني.</p></div>
+      <div class="card"><h3>«💾 حفظ» في آخر كل جلسة</h3><p>ملف الحفظ فيه كل الشهور وكل السنين. الملف بيحتفظ بنسخة طوارئ على الجهاز، لكنها مش بديل عن «حفظ».</p></div>
+      <div class="card"><h3>نفس الملف كل شهر</h3><p>الشهر الجاي افتح نفس ملف الحفظ وكمّل عليه. ماتبدأش ملف جديد كل شهر ولا كل سنة.</p></div>
+    </div>
+  </div>
+</section>
+
+<section id="release" style="padding-top:0">
+  <div class="wrap">
+    <span class="kicker">التحديثات</span>
+    <h2 class="sec-title">آخر إصدار</h2>
+    <p class="sec-sub">الملف بينبّهك لوحده لما يصدر إصدار أحدث.</p>
+    <div class="release">
+      <div class="ver" id="relLabel">الإصدار 0.8</div>
+      <ul id="relNotes"><li>أول إصدار على صفحة التحميل.</li></ul>
+      <div class="actions">
+        <a class="btn btn-teal" href="monthly-stats.html">افتح آخر إصدار</a>
+        <a class="btn btn-line" href="monthly-stats.html" download="الإحصاء-الشهري-للمستشفيات.html">تحميل الملف</a>
+      </div>
+      <div class="small">قبل ما تنقل لإصدار جديد: اضغط «💾 حفظ» في الإصدار القديم، وبعدين افتح ملف الحفظ في الإصدار الجديد. ملفات الحفظ القديمة بتتفتح عادي.</div>
+    </div>
+  </div>
+</section>
+</main>
+
+<footer>
+  <div class="wrap">
+    <b>الإدارة العامة للطب العلاجي — مديرية الشئون الصحية بأسيوط</b><br>
+    الإحصاء الشهري للمستشفيات · <span id="footVer">STAT-V0.8-Nov2026</span><br>
+    نسخة تجريبية (Pilot)
+  </div>
+</footer>
+
+<script>
+(function(){
+  var ua = navigator.userAgent || "";
+  var isIOS = /iPhone|iPad|iPod/.test(ua) || (navigator.platform === "MacIntel" && navigator.maxTouchPoints > 1);
+  var isAndroid = /Android/.test(ua);
+  if(/FBAN|FBAV|Instagram|Line\/|Messenger|WhatsApp/.test(ua)) document.getElementById("inapp").style.display = "block";
+  function selectTab(name){
+    document.querySelectorAll(".tab").forEach(function(t){ t.setAttribute("aria-selected", t.getAttribute("data-tab") === name ? "true" : "false"); });
+    document.querySelectorAll(".panel").forEach(function(p){ p.classList.toggle("on", p.id === "p-" + name); });
+  }
+  document.querySelectorAll(".tab").forEach(function(t){ t.addEventListener("click", function(){ selectTab(t.getAttribute("data-tab")); }); });
+  selectTab(isIOS ? "ios" : (isAndroid ? "android" : "pc"));
+  if(isIOS){ document.querySelectorAll('a[download]').forEach(function(a){ a.style.display = "none"; }); }
+
+  var pageUrl = location.href.split("#")[0];
+  document.getElementById("pageUrl").textContent = pageUrl;
+  document.getElementById("copyBtn").addEventListener("click", function(){
+    var b = this;
+    function done(){ b.textContent = "اتنسخ ✓"; setTimeout(function(){ b.textContent = "نسخ الرابط"; }, 1800); }
+    if(navigator.clipboard && window.isSecureContext){ navigator.clipboard.writeText(pageUrl).then(done, function(){}); }
+    else { var t = document.createElement("textarea"); t.value = pageUrl; document.body.appendChild(t); t.select(); try{ document.execCommand("copy"); done(); }catch(e){} document.body.removeChild(t); }
+  });
+
+  if(window.fetch && /^https?:$/.test(location.protocol)){
+    fetch("version.json?t=" + Date.now(), {cache: "no-store"}).then(function(r){ return r.ok ? r.json() : null; }).then(function(v){
+      if(!v) return;
+      if(v.version){ document.getElementById("verChip").textContent = "الإصدار الحالي: " + v.version; document.getElementById("footVer").textContent = v.version; }
+      if(v.label) document.getElementById("relLabel").textContent = v.label;
+      if(v.notes && v.notes.length){ var ul = document.getElementById("relNotes"); ul.innerHTML = ""; v.notes.forEach(function(n){ var li = document.createElement("li"); li.textContent = n; ul.appendChild(li); }); }
+    }).catch(function(){});
+  }
+  if("serviceWorker" in navigator && /^https?:$/.test(location.protocol)){
+    window.addEventListener("load", function(){ navigator.serviceWorker.register("sw.js").catch(function(){}); });
+  }
+})();
+</script>
+</body>
+</html>
